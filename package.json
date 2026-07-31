@@ -1,0 +1,20 @@
+{
+  "name": "schoolos",
+  "version": "1.0.0",
+  "description": "A web application for school management",
+  "homepage": "https://github.com/misternaba25/SchoolOS#readme",
+  "bugs": {
+    "url": "https://github.com/misternaba25/SchoolOS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misternaba25/SchoolOS.git"
+  },
+  "license": "ISC",
+  "author": "MrEndf",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
