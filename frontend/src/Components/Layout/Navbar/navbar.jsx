@@ -1,10 +1,21 @@
 import React from 'react'
 import "./navbar.css"
+import {Link} from "react-router-dom"
+import Button from '../../UI/Button/button'
 
-const navbar = () => {
+const Navbar = (props) => {
   return (
-    <div>navbar</div>
+    <div className="navbar">
+      <div className="title">
+        {props.logo}
+      </div>
+      <div className="nav">
+        <Link to="/connexion">
+          Connexion
+        </Link>
+      </div>
+    </div>
   )
 }
 
-export default navbar
+export default Navbar
