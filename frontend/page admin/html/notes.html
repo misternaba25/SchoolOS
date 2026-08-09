@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchoolOS — Notes</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebar-root"></div>
+    <div class="main-area">
+      <div id="topbar-root"></div>
+      <main class="page-content">
+
+        <div class="page-header">
+          <div>
+            <h1>Notes <span class="backend-note">Données à 0 — API non branchée</span></h1>
+            <p>Saisissez et consultez les notes des élèves par matière et par trimestre.</p>
+          </div>
+          
+        </div>
+<section class="stat-grid">
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-purple">📝</div>
+              <div>
+                <div class="stat-card__label">Notes saisies</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-green">📈</div>
+              <div>
+                <div class="stat-card__label">Moyenne générale</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-orange">🏆</div>
+              <div>
+                <div class="stat-card__label">Meilleure moyenne</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-blue">⚠️</div>
+              <div>
+                <div class="stat-card__label">Notes en attente</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="table-toolbar">
+            <h3>Registre des notes</h3>
+            <div class="table-toolbar__actions">
+              <button class="btn btn-primary" id="addGradeBtn">+ Saisir une note</button><button class="btn btn-outline" id="importGradesBtn">⬇ Importer Excel</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Élève</th><th>Classe</th><th>Matière</th><th>Trimestre</th><th>Note /20</th><th>Appréciation</th><th>Actions</th></tr></thead>
+              <tbody id="gradesTableBody">
+                <!-- TODO backend: alimenter dynamiquement ce corps de tableau via fetch API -->
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state">
+            <div class="empty-state__icon">📝</div>
+            <strong>Aucune note saisie</strong>
+            <span>Sélectionnez une classe et une matière pour commencer la saisie des notes.</span>
+          </div>
+          <div class="table-pagination">
+            <span>0 note(s) au total</span>
+            <div class="pagination-btns">
+              <button disabled>‹</button>
+              <button class="is-active">1</button>
+              <button disabled>›</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>window.CURRENT_PAGE = "notes";</script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
 
