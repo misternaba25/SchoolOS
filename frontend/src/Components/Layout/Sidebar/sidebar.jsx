@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export default function Sidebar() {
+export default function Sidebar({OnToggle, isOpen}) {
   return (
-    <aside className={`sidebar ${isOpen ? 'is-open' : ''}`}>
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-brand">
         <div className="sidebar-brand__logo">🏫</div>
         <div className="sidebar-brand__text">

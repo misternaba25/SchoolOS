@@ -86,7 +86,14 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
   background: linear-gradient(180deg, var(--sidebar-grad-top) 0%, var(--sidebar-grad-bottom) 100%);
+  left: -260px;
+  width: 260px;
+  transition: 0.3s;
+  position: fixed;
+}
 
+.sidebar.open {
+  left: 0;
 }
 
 .sidebar-brand {
@@ -772,6 +779,19 @@ table.data-table {
   .form-grid { grid-template-columns: 1fr; }
 }
 
+@media screen and (min-width: 1024px){
+  .sidebar {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--sidebar-grad-top) 0%, var(--sidebar-grad-bottom) 100%);
+    left:0;
+    position: static;
+    width: 440px;
+  }
+
+}
+
 /*@media (max-width: 900px) {
   .sidebar { transform: translateX(-100%); transition: transform 0.2s ease; }
   .sidebar.is-open { transform: translateX(0); }
@@ -796,8 +816,5 @@ table.data-table {
 @media screen and (max-width:1024px){
   .app-shell{
     display: flex;
-  }
-  .sidebar{
-    display: none;
   }
 }

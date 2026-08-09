@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Sidebar from '../Sidebar/sidebar';
 
 
-export default function Topbar() {
+export default function Topbar({onToggle}) {
 
   const [isOpen, setIsOpen] = useState(false)
   const toggleMenu = () => setIsOpen(!isOpen)
