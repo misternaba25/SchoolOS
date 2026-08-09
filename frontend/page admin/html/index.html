@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchoolOS — Tableau de bord</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-root="true">
+  <div class="app-shell">
+    <div id="sidebar-root"></div>
 
+    <div class="main-area">
+      <div id="topbar-root"></div>
+
+      <main class="page-content">
+        <!-- Bloc bienvenue -->
+        <section class="welcome-card">
+          <div>
+            <h1>Bienvenue Administrateur 👋</h1>
+            <p>Voici un aperçu de ce qui se passe dans votre établissement aujourd'hui.</p>
+            <button class="btn btn-primary" id="generateReportBtn">
+              Générer un rapport 📄
+            </button>
+            <!-- TODO backend: POST /api/rapports/generer -->
+          </div>
+          <div class="welcome-card__illustration">🖥️📈</div>
+        </section>
+
+        <!-- Cartes statistiques -->
+        <section class="stat-grid">
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-purple">🎓</div>
+              <div>
+                <div class="stat-card__label">Élèves</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-blue">🧑‍🏫</div>
+              <div>
+                <div class="stat-card__label">Professeurs</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-green">🏫</div>
+              <div>
+                <div class="stat-card__label">Classes</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-orange">💰</div>
+              <div>
+                <div class="stat-card__label">Paiements du mois</div>
+                <div class="stat-card__value" data-counter="0">0 FCFA</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+        </section>
+
+        <!-- Activité récente -->
+        <section class="dashboard-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Statistiques rapides</h3>
+              <span class="backend-note">Données à brancher</span>
+            </div>
+            <div class="empty-state">
+              <div class="empty-state__icon">📊</div>
+              <strong>Aucune statistique disponible</strong>
+              <span>Connectez l'API pour afficher les tendances de l'établissement.</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Activités récentes</h3>
+              <span class="link">Voir tout</span>
+            </div>
+            <div class="activity-list" id="activityList">
+              <div class="empty-state">
+                <div class="empty-state__icon">🕓</div>
+                <strong>Aucune activité récente</strong>
+                <span>Les inscriptions, paiements et bulletins générés apparaîtront ici.</span>
+              </div>
+              <!-- TODO backend: GET /api/dashboard/activity -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Graphiques -->
+        <section class="charts-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Évolution des inscriptions</h3>
+              <select class="mini-select"><option>Cette année</option></select>
+            </div>
+            <div class="card-body">
+              <div class="chart-canvas-wrap">
+                <canvas id="inscriptionsChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Répartition des élèves par classe</h3>
+              <select class="mini-select"><option>Toutes les classes</option></select>
+            </div>
+            <div class="card-body">
+              <div class="chart-canvas-wrap">
+                <canvas id="repartitionChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Paiements mensuels</h3>
+              <select class="mini-select"><option>Cette année</option></select>
+            </div>
+            <div class="card-body">
+              <div class="chart-canvas-wrap donut">
+                <canvas id="paiementsChart"></canvas>
+                <div class="donut-center">
+                  <strong>0 FCFA</strong>
+                  <span>Total</span>
+                </div>
+              </div>
+              <div class="legend-list">
+                <div class="legend-item">
+                  <span class="name"><span class="dot" style="background:#7c3aed"></span>Frais de scolarité</span>
+                  <span class="value">0%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="name"><span class="dot" style="background:#3b82f6"></span>Cantine</span>
+                  <span class="value">0%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="name"><span class="dot" style="background:#17b26a"></span>Transport</span>
+                  <span class="value">0%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="name"><span class="dot" style="background:#f59e0b"></span>Uniforme</span>
+                  <span class="value">0%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="name"><span class="dot" style="background:#ef4444"></span>Examens</span>
+                  <span class="value">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tables -->
+        <section class="two-col">
+          <div class="card">
+            <div class="table-toolbar">
+              <h3>Gestion des élèves</h3>
+              <div class="table-toolbar__actions">
+                <button class="btn btn-primary" id="addStudentBtn">+ Ajouter un élève</button>
+                <button class="btn btn-outline" id="importExcelBtn">⬇ Importer Excel</button>
+                <button class="btn btn-outline" id="exportPdfBtn">⬆ Exporter PDF</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Matricule</th>
+                    <th>Photo</th>
+                    <th>Nom complet</th>
+                    <th>Sexe</th>
+                    <th>Classe</th>
+                    <th>Parent</th>
+                    <th>Téléphone</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                  <!-- TODO backend: GET /api/eleves (paginé) -->
+                </tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="studentsEmptyState">
+              <div class="empty-state__icon">🎓</div>
+              <strong>Aucun élève enregistré</strong>
+              <span>Ajoutez un élève ou importez une liste depuis Excel.</span>
+            </div>
+            <div class="table-pagination">
+              <span>0 élève au total</span>
+              <div class="pagination-btns">
+                <button disabled>‹</button>
+                <button class="is-active">1</button>
+                <button disabled>›</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-toolbar">
+              <h3>Paiements récents</h3>
+              <span class="link">Voir tout</span>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Élève</th>
+                    <th>Type</th>
+                    <th>Montant</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTableBody">
+                  <!-- TODO backend: GET /api/paiements/recents -->
+                </tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="paymentsEmptyState">
+              <div class="empty-state__icon">💳</div>
+              <strong>Aucun paiement enregistré</strong>
+              <span>Les paiements récents s'afficheront ici une fois l'API branchée.</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>window.CURRENT_PAGE = "dashboard";</script>
+  <script src="js/layout.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
