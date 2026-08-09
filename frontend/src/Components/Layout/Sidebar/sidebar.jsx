@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function Sidebar() {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'is-open' : ''}`}>
       <div className="sidebar-brand">
         <div className="sidebar-brand__logo">🏫</div>
         <div className="sidebar-brand__text">
