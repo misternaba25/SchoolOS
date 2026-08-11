@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchoolOS — Élèves</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebar-root"></div>
+    <div class="main-area">
+      <div id="topbar-root"></div>
+      <main class="page-content">
+
+        <div class="page-header">
+          <div>
+            <h1>Élèves <span class="backend-note">Données à 0 — API non branchée</span></h1>
+            <p>Gérez la liste complète des élèves inscrits dans l'établissement.</p>
+          </div>
+          
+        </div>
+<section class="stat-grid">
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-purple">🎓</div>
+              <div>
+                <div class="stat-card__label">Total élèves</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-green">✅</div>
+              <div>
+                <div class="stat-card__label">Élèves actifs</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-orange">⏳</div>
+              <div>
+                <div class="stat-card__label">En attente</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-blue">🚫</div>
+              <div>
+                <div class="stat-card__label">Suspendus</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="table-toolbar">
+            <h3>Liste des élèves</h3>
+            <div class="table-toolbar__actions">
+              <button class="btn btn-primary" id="addStudentBtn">+ Ajouter un élève</button><button class="btn btn-outline" id="importExcelBtn">⬇ Importer Excel</button><button class="btn btn-outline" id="exportPdfBtn">⬆ Exporter PDF</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Matricule</th><th>Photo</th><th>Nom complet</th><th>Sexe</th><th>Classe</th><th>Parent</th><th>Téléphone</th><th>Statut</th><th>Actions</th></tr></thead>
+              <tbody id="studentsTableBody">
+                <!-- TODO backend: alimenter dynamiquement ce corps de tableau via fetch API -->
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state">
+            <div class="empty-state__icon">🎓</div>
+            <strong>Aucun élève enregistré</strong>
+            <span>Cliquez sur "Ajouter un élève" ou importez une liste Excel pour commencer.</span>
+          </div>
+          <div class="table-pagination">
+            <span>0 élève(s) au total</span>
+            <div class="pagination-btns">
+              <button disabled>‹</button>
+              <button class="is-active">1</button>
+              <button disabled>›</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/modal.js"></script>
+  <script src="../js/list-page.js"></script>
+  <script>window.CURRENT_PAGE = "eleves";</script>
+
+  <script>
+    window.PAGE_CONFIG = {
+      pageName: "eleves",
+      listEndpoint: API_ENDPOINTS.eleves.list,
+      createEndpoint: API_ENDPOINTS.eleves.create,
+      deleteEndpoint: API_ENDPOINTS.eleves.delete,
+      tbodyId: "studentsTableBody",
+      countLabel: "élève(s)",
+      addButtonId: "addStudentBtn",
+      modalTitle: "Ajouter un élève",
+      statsKeys: ["total", "actifs", "enAttente", "suspendus"],
+      formFields: [
+        { name: "nom_complet", label: "Nom complet", required: true },
+        { name: "sexe", label: "Sexe", type: "select", options: [{ value: "M", label: "Masculin" }, { value: "F", label: "Féminin" }] },
+        { name: "classe_id", label: "Classe", type: "select", options: [] /* TODO backend: peupler avec GET /api/classes */ },
+        { name: "parent_nom", label: "Nom du parent" },
+        { name: "telephone", label: "Téléphone" },
+      ],
+      rowTemplate: (e) => `
+        <tr>
+          <td>${e.matricule || ""}</td>
+          <td><div class="avatar-cell">👤</div></td>
+          <td>${e.nom_complet || ""}</td>
+          <td>${e.sexe || ""}</td>
+          <td>${e.classe || ""}</td>
+          <td>${e.parent || ""}</td>
+          <td>${e.telephone || ""}</td>
+          <td><span class="status-pill neutral">${e.statut || ""}</span></td>
+          <td class="row-actions">
+            <button title="Voir">👁️</button>
+            <button title="Modifier">✏️</button>
+            <button title="Supprimer" data-action="delete" data-id="${e.id}">🗑️</button>
+          </td>
+        </tr>`,
+    };
+    document.addEventListener("DOMContentLoaded", () => initListPage(window.PAGE_CONFIG));
+  </script>
+</body>
+</html>
