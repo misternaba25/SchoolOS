@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchoolOS — Parents</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebar-root"></div>
+    <div class="main-area">
+      <div id="topbar-root"></div>
+      <main class="page-content">
+
+        <div class="page-header">
+          <div>
+            <h1>Parents <span class="backend-note">Données à 0 — API non branchée</span></h1>
+            <p>Consultez les comptes parents/tuteurs liés aux élèves.</p>
+          </div>
+          
+        </div>
+<section class="stat-grid">
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-purple">👪</div>
+              <div>
+                <div class="stat-card__label">Total parents</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-green">✅</div>
+              <div>
+                <div class="stat-card__label">Comptes actifs</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-orange">📵</div>
+              <div>
+                <div class="stat-card__label">Sans téléphone</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card__top">
+              <div class="stat-card__icon bg-blue">🆕</div>
+              <div>
+                <div class="stat-card__label">Nouveaux ce mois</div>
+                <div class="stat-card__value" data-counter="0">0</div>
+              </div>
+            </div>
+            <span class="stat-card__delta flat">+0,0% ce mois</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="table-toolbar">
+            <h3>Liste des parents</h3>
+            <div class="table-toolbar__actions">
+              <button class="btn btn-primary" id="addParentBtn">+ Ajouter un parent</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Nom complet</th><th>Enfant(s)</th><th>Téléphone</th><th>Email</th><th>Statut</th><th>Actions</th></tr></thead>
+              <tbody id="parentsTableBody">
+                <!-- TODO backend: alimenter dynamiquement ce corps de tableau via fetch API -->
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state">
+            <div class="empty-state__icon">👪</div>
+            <strong>Aucun parent enregistré</strong>
+            <span>Les comptes parents apparaissent ici automatiquement à l'inscription d'un élève.</span>
+          </div>
+          <div class="table-pagination">
+            <span>0 parent(s) au total</span>
+            <div class="pagination-btns">
+              <button disabled>‹</button>
+              <button class="is-active">1</button>
+              <button disabled>›</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/modal.js"></script>
+  <script src="../js/list-page.js"></script>
+  <script>window.CURRENT_PAGE = "parents";</script>
+
+  <script>
+    window.PAGE_CONFIG = {
+      pageName: "parents",
+      listEndpoint: API_ENDPOINTS.parents.list,
+      createEndpoint: API_ENDPOINTS.parents.create,
+      deleteEndpoint: API_ENDPOINTS.parents.delete,
+      tbodyId: "parentsTableBody",
+      countLabel: "parent(s)",
+      addButtonId: "addParentBtn",
+      modalTitle: "Ajouter un parent",
+      statsKeys: ["total", "actifs", "sansTelephone", "nouveaux"],
+      formFields: [
+        { name: "nom_complet", label: "Nom complet", required: true },
+        { name: "telephone", label: "Téléphone" },
+        { name: "email", label: "Email", type: "email" },
+      ],
+      rowTemplate: (p) => `
+        <tr>
+          <td>${p.nom_complet || ""}</td>
+          <td>${p.enfants || ""}</td>
+          <td>${p.telephone || ""}</td>
+          <td>${p.email || ""}</td>
+          <td><span class="status-pill neutral">${p.statut || ""}</span></td>
+          <td class="row-actions">
+            <button title="Voir">👁️</button>
+            <button title="Modifier">✏️</button>
+            <button title="Supprimer" data-action="delete" data-id="${p.id}">🗑️</button>
+          </td>
+        </tr>`,
+    };
+    document.addEventListener("DOMContentLoaded", () => initListPage(window.PAGE_CONFIG));
+  </script>
+</body>
+</html>
