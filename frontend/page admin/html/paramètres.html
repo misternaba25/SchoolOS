@@ -32,6 +32,11 @@
               <div class="form-field"><label>Téléphone</label><input type="text" placeholder="—" /></div>
               <div class="form-field"><label>Email de contact</label><input type="email" placeholder="—" /></div>
             </div>
+            <div class="form-field">
+              <label>Logo de l'établissement</label>
+              <input type="file" id="schoolLogoInput" accept="image/png, image/jpeg, image/svg+xml" />
+              <img id="schoolLogoPreview" src="" alt="" style="max-width:80px; margin-top:8px; display:none;" />
+            </div>
             <div style="padding:0 20px 20px;">
               <button class="btn btn-primary" id="saveSchoolInfoBtn">Enregistrer</button>
               <!-- TODO backend: PUT /api/parametres -->
