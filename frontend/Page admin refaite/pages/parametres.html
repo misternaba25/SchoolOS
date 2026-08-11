@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchoolOS — Paramètres</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebar-root"></div>
+    <div class="main-area">
+      <div id="topbar-root"></div>
+      <main class="page-content">
+
+        <div class="page-header">
+          <div>
+            <h1>Paramètres <span class="backend-note">Données à 0 — API non branchée</span></h1>
+            <p>Configurez les informations générales et les préférences de SchoolOS.</p>
+          </div>
+          
+        </div>
+
+        <section class="two-col">
+          <div class="card">
+            <div class="card-header"><h3>Informations de l'établissement</h3></div>
+            <form id="schoolInfoForm" class="form-grid">
+              <div class="form-field"><label>Logo de l'établissement</label>
+                <input type="file" id="schoolLogoInput" name="logo" accept="image/png, image/jpeg, image/svg+xml" />
+                <img id="schoolLogoPreview" src="" alt="" style="max-width:70px;margin-top:8px;border-radius:8px;display:none;" />
+              </div>
+              <div class="form-field"><label>Nom de l'établissement</label><input type="text" name="nom" placeholder="—" /></div>
+              <div class="form-field"><label>Type d'établissement</label><input type="text" name="type" placeholder="—" /></div>
+              <div class="form-field"><label>Adresse</label><input type="text" name="adresse" placeholder="—" /></div>
+              <div class="form-field"><label>Ville</label><input type="text" name="ville" placeholder="—" /></div>
+              <div class="form-field"><label>Téléphone</label><input type="text" name="telephone" placeholder="—" /></div>
+              <div class="form-field"><label>Email de contact</label><input type="email" name="email" placeholder="—" /></div>
+            </form>
+            <div style="padding:0 20px 20px;">
+              <button type="submit" form="schoolInfoForm" class="btn btn-primary" id="saveSchoolInfoBtn">Enregistrer</button>
+              <span class="modal-error" id="schoolInfoError"></span>
+              <!-- Câblé sur GET/PUT /api/parametres, voir <script> en bas de page -->
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Année scolaire</h3></div>
+            <div class="form-grid">
+              <div class="form-field"><label>Année scolaire active</label><input type="text" placeholder="— — — —" /></div>
+              <div class="form-field"><label>Date de début</label><input type="date" /></div>
+              <div class="form-field"><label>Date de fin</label><input type="date" /></div>
+              <div class="form-field"><label>Nombre de trimestres</label><input type="number" placeholder="0" /></div>
+            </div>
+            <div style="padding:0 20px 20px;">
+              <button class="btn btn-outline" id="newYearBtn">+ Créer une nouvelle année scolaire</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="two-col">
+          <div class="card">
+            <div class="card-header"><h3>Notifications</h3></div>
+            <div class="empty-state">
+              <div class="empty-state__icon">🔔</div>
+              <strong>Préférences non configurées</strong>
+              <span>Choisissez les événements qui déclenchent une notification (paiement, absence, bulletin...).</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Sécurité</h3></div>
+            <div class="empty-state">
+              <div class="empty-state__icon">🔒</div>
+              <strong>Aucune règle de sécurité définie</strong>
+              <span>Configurez la politique de mots de passe et l'authentification à deux facteurs.</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/app.js"></script>
+  <script>window.CURRENT_PAGE = "parametres";</script>
+  <script>
+    /**
+     * Câblage de la page Paramètres :
+     *  - GET  /api/parametres  -> pré-remplit le formulaire au chargement
+     *  - PUT  /api/parametres  -> enregistre les infos de l'établissement
+     *  - le champ "logo" est envoyé en multipart/form-data (upload de fichier)
+     */
+    async function loadSchoolSettings() {
+      try {
+        const school = await apiGet(API_ENDPOINTS.parametres.get);
+        const form = document.getElementById("schoolInfoForm");
+        ["nom", "type", "adresse", "ville", "telephone", "email"].forEach((field) => {
+          if (form[field] && school[field] !== undefined) form[field].value = school[field];
+        });
+        if (school.logo_url) {
+          const preview = document.getElementById("schoolLogoPreview");
+          preview.src = school.logo_url;
+          preview.style.display = "block";
+        }
+      } catch (err) {
+        console.warn("[parametres] impossible de charger les infos établissement:", err.message);
+      }
+    }
+
+    const schoolLogoInput = document.getElementById("schoolLogoInput");
+    if (schoolLogoInput) {
+      schoolLogoInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const preview = document.getElementById("schoolLogoPreview");
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      });
+    }
+
+    const schoolInfoForm = document.getElementById("schoolInfoForm");
+    if (schoolInfoForm) {
+      schoolInfoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const errorEl = document.getElementById("schoolInfoError");
+        const btn = document.getElementById("saveSchoolInfoBtn");
+        errorEl.textContent = "";
+        btn.disabled = true;
+        btn.textContent = "Enregistrement...";
+
+        try {
+          const formData = new FormData(schoolInfoForm); // inclut le fichier logo s'il a été choisi
+          await apiPut(API_ENDPOINTS.parametres.update, formData);
+          btn.textContent = "Enregistré ✓";
+          setTimeout(() => (btn.textContent = "Enregistrer"), 1500);
+        } catch (err) {
+          errorEl.textContent = err.message || "Enregistrement impossible, vérifiez la connexion à l'API.";
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadSchoolSettings);
+  </script>
+</body>
+</html>
