@@ -1,7 +1,7 @@
 
 Frontend statique (HTML / CSS / JS vanilla + Chart.js) de l'application SchoolOS. Toutes les données affichées sont à zéro / vides : c'est un squelette prêt à être branché sur une API backend (Laravel, Node/Express, etc.).
 Structure du projet
-schoolos-frontend/
+
 ├── index.html                # Tableau de bord
 ├── pages/
 │   ├── eleves.html
