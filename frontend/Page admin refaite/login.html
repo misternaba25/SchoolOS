@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchoolOS — Connexion</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="auth-shell">
+    <div class="auth-card">
+      <div class="auth-card__brand">
+        <span>🛡️</span>
+        <span>SchoolOS</span>
+      </div>
+      <h1>Connexion</h1>
+      <p>Accédez à votre espace de gestion scolaire.</p>
+
+      <form class="auth-form" id="loginForm">
+        <div class="form-field">
+          <label>Adresse email</label>
+          <input type="email" name="email" placeholder="admin@schoolos.com" required />
+        </div>
+        <div class="form-field">
+          <label>Mot de passe</label>
+          <input type="password" name="password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Se connecter</button>
+        <div class="auth-error" id="loginError"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
