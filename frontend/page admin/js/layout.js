@@ -55,10 +55,19 @@ function renderSidebar(activePage, isRootPage) {
         <ul>${navHtml}</ul>
       </nav>
 
+       <div class="badge" id="schoolLogoBadge">🏫</div>
+  <div>
+    <strong id="schoolNameLabel">Aucun établissement</strong>
+    <!-- TODO backend: GET /api/etablissements/actif -->
+  </div>
+</div>
+
       <div class="sidebar-footer">
         <div class="sidebar-footer__school">
           <div class="badge">🏫</div>
           <div>
+          <div class="sidebar-footer__school">
+ 
             <strong>Aucun établissement</strong>
             <!-- TODO backend: GET /api/etablissements/actif -->
           </div>
