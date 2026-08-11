@@ -159,3 +159,11 @@ function initLayout() {
 
 document.addEventListener("DOMContentLoaded", initLayout);
 
+// TODO backend: remplacer ce bloc par un vrai appel API
+// const etablissement = await apiGet(API_ENDPOINTS.etablissements.actif);
+// if (etablissement.logo_url) {
+//   document.getElementById("schoolLogoBadge").innerHTML =
+//     `<img src="${etablissement.logo_url}" alt="${etablissement.nom}" style="width:100%;height:100%;border-radius:8px;object-fit:cover;" />`;
+// }
+// document.getElementById("schoolNameLabel").textContent = etablissement.nom;
+
